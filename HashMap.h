@@ -10,22 +10,6 @@ public:
 	}
 };
 
-/*template<>
-class MyHash<TestClass>
-{
-public:
-	size_t operator()( const TestClass &s ) const
-	{
-		size_t h1 = std::hash<int>()( s.x );
-		return h1;
-		//size_t h2 = std::hash<bool>()( s.tBool );
-		//size_t h3 = std::hash<float>()( s.tFloat );
-		//size_t h4 = std::hash<long long>()( s.tLL );
-		//size_t h5 = std::hash<std::string>()( s.tStr );
-		//return h1 ^ ( h2 << 1 );
-	}
-};*/
-
 template <typename TKey, typename TValue>
 class THashEntry
 {
@@ -78,10 +62,6 @@ public:
 	
 	HashEntry& operator=( HashEntry&& tmp )
 	{
-		/*UsedFlag = tmp.UsedFlag;
-		Key = static_cast< TKey&& >(tmp.Key);
-		Value = static_cast< TValue&& >( tmp.Value );
-		HashValue = tmp.HashValue;*/
 		Swap( tmp );
 		return *this;
 	}
@@ -103,7 +83,7 @@ class THashMap
 	typedef THashMap<TKey, TValue> HashMap;
 
 	HashEntry*	pData;		
-	unsigned	logN = 7;		//!? byte
+	unsigned	logN;		//!? byte
 
 public:
 	THashMap() : pData( nullptr ) {};
@@ -149,7 +129,7 @@ public:
 
 			if( priceEntry > priceAnotherEntry )
 			{
-//!!!AAAAAAAAAaaa MoveSemantic onelove!
+//!!!AAAAAAAAAaaa MoveSemantic
 				HashEntry tmp( pData[ index ] );
 				pData[ index ] = entry;
 				entry = tmp;
@@ -256,21 +236,6 @@ public:
 			return;
 		
 		Allocate( newLog );
-	}
-
-	void Print()
-	{
-		size_t size = BucketCount();
-		for( size_t i = 0; i < size; ++i )
-		{
-			if( pData[ i ].UsedFlag )
-			{
-				std::cout << "[ " << i << " ]\t";
-				std::cout << pData[ i ].Key << "\t";
-				std::cout << std::hex << pData[ i ].HashValue << std::dec;
-				std::cout << std::endl;
-			}
-		}
 	}
 
 private:
